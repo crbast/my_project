@@ -8,11 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class PostController extends AbstractController
 {
+    /**
+     * @Route("/post", methods="GET", name="post:index")
+     */
     public function index(SerializerInterface $serializer, EntityManagerInterface $entityManager): JsonResponse
     {
         $temp = $entityManager->getRepository(Post::class)->findAll();
@@ -21,6 +25,9 @@ class PostController extends AbstractController
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 
+    /**
+     * @Route("/post", methods="POST", name="post:create")
+     */
     public function create(SerializerInterface $serializer, EntityManagerInterface $entityManager, Request $request): JsonResponse
     {
         $post = new Post();
